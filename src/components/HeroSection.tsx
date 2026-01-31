@@ -1,8 +1,11 @@
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 import { Leaf, Brain, TrendingUp, Zap, ChevronRight, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+  
   const scrollToDashboard = () => {
     const dashboardSection = document.getElementById('dashboard');
     if (dashboardSection) {
@@ -93,12 +96,7 @@ const HeroSection = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              onClick={() => {
-                const architectureSection = document.getElementById('architecture');
-                if (architectureSection) {
-                  architectureSection.scrollIntoView({ behavior: 'smooth' });
-                }
-              }}
+              onClick={() => navigate('/docs')}
               className="gap-3 text-lg px-10 py-7 border-2 border-accent/50 hover:border-accent text-accent hover:bg-accent/10 font-bold tracking-wider uppercase cyber-btn transition-all duration-300"
             >
               View Docs
