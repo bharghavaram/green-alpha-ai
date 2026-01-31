@@ -93,6 +93,12 @@ const HeroSection = () => {
             <Button 
               size="lg" 
               variant="outline" 
+              onClick={() => {
+                const architectureSection = document.getElementById('architecture');
+                if (architectureSection) {
+                  architectureSection.scrollIntoView({ behavior: 'smooth' });
+                }
+              }}
               className="gap-3 text-lg px-10 py-7 border-2 border-accent/50 hover:border-accent text-accent hover:bg-accent/10 font-bold tracking-wider uppercase cyber-btn transition-all duration-300"
             >
               View Docs
