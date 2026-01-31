@@ -8,6 +8,7 @@ import ESGScoreCard from "@/components/ESGScoreCard";
 import AgentInsightCard from "@/components/AgentInsightCard";
 import PriceChart from "@/components/PriceChart";
 import PortfolioChart from "@/components/PortfolioChart";
+import ChatSection from "@/components/ChatSection";
 import { stocksData, esgMetrics, agentInsights } from "@/data/stockData";
 import { Zap, TrendingUp, Brain, Target, ChevronRight, Github, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -108,6 +109,9 @@ const Index = () => {
           </div>
         </div>
       </section>
+
+      {/* AI Chat Terminal */}
+      <ChatSection />
 
       {/* Full AI Agents Section */}
       <section className="py-20 bg-secondary/30 relative" id="agents-full">
