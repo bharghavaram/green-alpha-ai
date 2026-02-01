@@ -29,10 +29,12 @@ export const globalIndices: MarketIndex[] = [
   { symbol: "SSE", name: "Shanghai", region: "CN", price: 3015.45, change: -12.34, changePercent: -0.41, status: "closed" },
 ];
 
-// Commodities - Gold and Silver
+// Commodities - Gold, Silver, and Cryptocurrencies
 export const commodities: Commodity[] = [
   { symbol: "XAU", name: "Gold", price: 2345.80, change: 18.45, changePercent: 0.79, unit: "USD/oz" },
   { symbol: "XAG", name: "Silver", price: 27.85, change: -0.23, changePercent: -0.82, unit: "USD/oz" },
+  { symbol: "BTC", name: "Bitcoin", price: 97245.50, change: 1523.40, changePercent: 1.59, unit: "USD" },
+  { symbol: "ETH", name: "Ethereum", price: 3412.75, change: -45.20, changePercent: -1.31, unit: "USD" },
 ];
 
 // Generate random price fluctuation
