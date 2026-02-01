@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import ArchitectureSection from "@/components/ArchitectureSection";
+import GlobalMarketsSection from "@/components/GlobalMarketsSection";
 import StockCard from "@/components/StockCard";
 import ESGScoreCard from "@/components/ESGScoreCard";
 import AgentInsightCard from "@/components/AgentInsightCard";
@@ -25,6 +26,9 @@ const Index = () => {
 
       {/* Architecture */}
       <ArchitectureSection />
+
+      {/* Global Markets - Live Updates */}
+      <GlobalMarketsSection />
 
       {/* Dashboard Section */}
       <section id="dashboard" className="py-20 relative">
