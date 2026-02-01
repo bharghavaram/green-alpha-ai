@@ -76,7 +76,7 @@ const GlobalMarketsSection = () => {
           </div>
         </motion.div>
 
-        {/* Commodities - Gold & Silver */}
+        {/* Precious Metals */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -88,7 +88,30 @@ const GlobalMarketsSection = () => {
             Precious Metals
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {commodities.map((commodity, index) => (
+            {commodities.filter(c => c.symbol === "XAU" || c.symbol === "XAG").map((commodity, index) => (
+              <CommodityCard 
+                key={commodity.symbol} 
+                commodity={commodity} 
+                delay={index}
+              />
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Cryptocurrencies */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.05 }}
+          className="mb-8"
+        >
+          <h3 className="font-display font-bold text-foreground mb-4 flex items-center gap-2 uppercase tracking-wider text-sm">
+            <TrendingUp className="w-4 h-4 text-orange-500" />
+            Cryptocurrencies
+          </h3>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {commodities.filter(c => c.symbol === "BTC" || c.symbol === "ETH").map((commodity, index) => (
               <CommodityCard 
                 key={commodity.symbol} 
                 commodity={commodity} 
