@@ -9,7 +9,8 @@ import {
   generatePriceUpdate,
   calculateChange,
   MarketIndex,
-  Commodity
+  Commodity,
+  USD_TO_INR
 } from "@/data/marketData";
 
 const GlobalMarketsSection = () => {
@@ -34,7 +35,11 @@ const GlobalMarketsSection = () => {
         const basePrice = initialCommodities.find(c => c.symbol === commodity.symbol)?.price || commodity.price;
         const newPrice = generatePriceUpdate(commodity.price, 0.001);
         const { change, changePercent } = calculateChange(newPrice, basePrice);
-        return { ...commodity, price: newPrice, change, changePercent };
+        // Update INR price for gold and silver (convert oz to 10g: 1 oz = 31.1035g)
+        const priceINR = commodity.unitINR 
+          ? Math.round((newPrice * USD_TO_INR / 31.1035) * 10 * 100) / 100 
+          : undefined;
+        return { ...commodity, price: newPrice, priceINR, change, changePercent };
       }));
 
       setLastUpdate(new Date());
