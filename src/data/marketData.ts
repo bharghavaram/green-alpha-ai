@@ -12,9 +12,11 @@ export interface Commodity {
   symbol: string;
   name: string;
   price: number;
+  priceINR?: number;
   change: number;
   changePercent: number;
   unit: string;
+  unitINR?: string;
 }
 
 // Global stock market indices
@@ -29,10 +31,13 @@ export const globalIndices: MarketIndex[] = [
   { symbol: "SSE", name: "Shanghai", region: "CN", price: 3015.45, change: -12.34, changePercent: -0.41, status: "closed" },
 ];
 
+// USD to INR conversion rate (approximate)
+export const USD_TO_INR = 83.25;
+
 // Commodities - Gold, Silver, and Cryptocurrencies
 export const commodities: Commodity[] = [
-  { symbol: "XAU", name: "Gold", price: 2345.80, change: 18.45, changePercent: 0.79, unit: "USD/oz" },
-  { symbol: "XAG", name: "Silver", price: 27.85, change: -0.23, changePercent: -0.82, unit: "USD/oz" },
+  { symbol: "XAU", name: "Gold", price: 2345.80, priceINR: 195338.85, change: 18.45, changePercent: 0.79, unit: "USD/oz", unitINR: "₹/10g" },
+  { symbol: "XAG", name: "Silver", price: 27.85, priceINR: 2318.51, change: -0.23, changePercent: -0.82, unit: "USD/oz", unitINR: "₹/10g" },
   { symbol: "BTC", name: "Bitcoin", price: 97245.50, change: 1523.40, changePercent: 1.59, unit: "USD" },
   { symbol: "ETH", name: "Ethereum", price: 3412.75, change: -45.20, changePercent: -1.31, unit: "USD" },
 ];

@@ -77,6 +77,12 @@ const CommodityCard = ({ commodity, delay = 0 }: CommodityCardProps) => {
           <div className="text-2xl font-display font-bold text-foreground">
             ${commodity.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
+          {commodity.priceINR && (
+            <div className="text-sm font-medium text-muted-foreground mt-0.5">
+              ₹{commodity.priceINR.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              <span className="text-xs ml-1 opacity-70">{commodity.unitINR}</span>
+            </div>
+          )}
           <div className={`flex items-center gap-1.5 mt-1 ${isPositive ? 'text-success' : 'text-destructive'}`}>
             {isPositive ? (
               <TrendingUp className="w-4 h-4" />
