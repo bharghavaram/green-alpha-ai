@@ -72,18 +72,28 @@ const CommodityCard = ({ commodity, delay = 0 }: CommodityCardProps) => {
         </div>
       </div>
 
-      <div className="flex items-end justify-between">
-        <div>
-          <div className="text-2xl font-display font-bold text-foreground">
-            ${commodity.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+      <div className="flex items-start justify-between">
+        <div className="space-y-3">
+          {/* USD Price */}
+          <div>
+            <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{commodity.unit}</div>
+            <div className="text-2xl font-display font-bold text-foreground">
+              ${commodity.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+            </div>
           </div>
+          
+          {/* INR Price - Same prominence as USD */}
           {commodity.priceINR && (
-            <div className="text-sm font-medium text-muted-foreground mt-0.5">
-              ₹{commodity.priceINR.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
-              <span className="text-xs ml-1 opacity-70">{commodity.unitINR}</span>
+            <div>
+              <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{commodity.unitINR}</div>
+              <div className="text-2xl font-display font-bold text-foreground">
+                ₹{commodity.priceINR.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              </div>
             </div>
           )}
-          <div className={`flex items-center gap-1.5 mt-1 ${isPositive ? 'text-success' : 'text-destructive'}`}>
+          
+          {/* Change indicator */}
+          <div className={`flex items-center gap-1.5 ${isPositive ? 'text-success' : 'text-destructive'}`}>
             {isPositive ? (
               <TrendingUp className="w-4 h-4" />
             ) : (
@@ -97,8 +107,8 @@ const CommodityCard = ({ commodity, delay = 0 }: CommodityCardProps) => {
             </span>
           </div>
         </div>
-        
-        {/* Mini sparkline placeholder */}
+          
+        {/* Mini sparkline */}
         <div className="flex items-end gap-0.5 h-8">
           {[40, 55, 45, 60, 52, 70, 65, 75].map((height, i) => (
             <div 
