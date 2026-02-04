@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { TrendingUp, TrendingDown, Gem, Bitcoin, CircleDollarSign } from "lucide-react";
+import { TrendingUp, TrendingDown, Gem, Bitcoin, CircleDollarSign, Coins } from "lucide-react";
 import { Commodity } from "@/data/marketData";
 
 interface CommodityCardProps {
@@ -13,6 +13,8 @@ const getAssetStyle = (symbol: string) => {
       return { gradient: "from-yellow-500 via-amber-400 to-yellow-600", bg: "bg-yellow-500/20", border: "border-yellow-500/50", icon: "text-yellow-400" };
     case "XAG":
       return { gradient: "from-slate-300 via-slate-100 to-slate-400", bg: "bg-slate-400/20", border: "border-slate-400/50", icon: "text-slate-300" };
+    case "PAXG":
+      return { gradient: "from-amber-400 via-yellow-300 to-amber-500", bg: "bg-amber-500/20", border: "border-amber-500/50", icon: "text-amber-400" };
     case "BTC":
       return { gradient: "from-orange-500 via-amber-500 to-orange-600", bg: "bg-orange-500/20", border: "border-orange-500/50", icon: "text-orange-400" };
     case "ETH":
@@ -28,6 +30,8 @@ const getIcon = (symbol: string) => {
       return Bitcoin;
     case "ETH":
       return CircleDollarSign;
+    case "PAXG":
+      return Coins;
     default:
       return Gem;
   }
