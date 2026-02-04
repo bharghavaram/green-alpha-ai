@@ -42,7 +42,8 @@ export const USD_TO_INR = 86.50;
 export const commodities: Commodity[] = [
   { symbol: "XAU", name: "Gold 24K", price: 2870.00, priceINR: 7982545, change: 22.50, changePercent: 0.79, unit: "USD/kg", unitINR: "₹/kg" },
   { symbol: "XAG", name: "Silver", price: 32.50, priceINR: 90350, change: 0.28, changePercent: 0.87, unit: "USD/kg", unitINR: "₹/kg" },
-  { symbol: "PAXG", name: "PAX Gold", price: 2872.50, change: 24.30, changePercent: 0.85, unit: "USD" },
+  { symbol: "PAXG", name: "PAX Gold", price: 2872.50, priceINR: 248472, change: 24.30, changePercent: 0.85, unit: "USD", unitINR: "₹" },
+  { symbol: "PAXS", name: "PAX Silver", price: 32.55, priceINR: 2816, change: 0.32, changePercent: 0.99, unit: "USD", unitINR: "₹" },
   { symbol: "BTC", name: "Bitcoin", price: 97245.50, change: 1523.40, changePercent: 1.59, unit: "USD" },
   { symbol: "ETH", name: "Ethereum", price: 3412.75, change: -45.20, changePercent: -1.31, unit: "USD" },
 ];

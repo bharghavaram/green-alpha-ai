@@ -35,11 +35,16 @@ const GlobalMarketsSection = () => {
         const basePrice = initialCommodities.find(c => c.symbol === commodity.symbol)?.price || commodity.price;
         const newPrice = generatePriceUpdate(commodity.price, 0.001);
         const { change, changePercent } = calculateChange(newPrice, basePrice);
-        // For gold/silver: prices stored as per oz, convert to per kg for INR display
-        // 1 kg = 32.1507 troy ounces
-        const priceINR = commodity.unitINR 
-          ? Math.round((newPrice * 32.1507 * USD_TO_INR) * 100) / 100 
-          : undefined;
+        
+        let priceINR: number | undefined;
+        if (commodity.symbol === "XAU" || commodity.symbol === "XAG") {
+          // Physical gold/silver: convert oz to kg (1 kg = 32.1507 oz)
+          priceINR = Math.round((newPrice * 32.1507 * USD_TO_INR) * 100) / 100;
+        } else if (commodity.symbol === "PAXG" || commodity.symbol === "PAXS") {
+          // Tokenized assets: direct USD to INR conversion (per token)
+          priceINR = Math.round((newPrice * USD_TO_INR) * 100) / 100;
+        }
+        
         return { ...commodity, price: newPrice, priceINR, change, changePercent };
       }));
 
@@ -117,7 +122,7 @@ const GlobalMarketsSection = () => {
             Tokenized Assets
           </h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {commodities.filter(c => c.symbol === "PAXG").map((commodity, index) => (
+            {commodities.filter(c => c.symbol === "PAXG" || c.symbol === "PAXS").map((commodity, index) => (
               <CommodityCard 
                 key={commodity.symbol} 
                 commodity={commodity} 
