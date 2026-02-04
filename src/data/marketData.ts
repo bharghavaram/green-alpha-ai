@@ -38,10 +38,11 @@ export const USD_TO_INR = 86.50;
 // Gold: ~$2,870/oz = ~$92,280/kg (1 kg = 32.1507 oz)
 // Silver: ~$32.50/oz = ~$1,045/kg
 
-// Commodities - 24K Gold, Silver, and Cryptocurrencies
+// Commodities - 24K Gold, Silver, Tokenized Assets, and Cryptocurrencies
 export const commodities: Commodity[] = [
   { symbol: "XAU", name: "Gold 24K", price: 2870.00, priceINR: 7982545, change: 22.50, changePercent: 0.79, unit: "USD/kg", unitINR: "₹/kg" },
   { symbol: "XAG", name: "Silver", price: 32.50, priceINR: 90350, change: 0.28, changePercent: 0.87, unit: "USD/kg", unitINR: "₹/kg" },
+  { symbol: "PAXG", name: "PAX Gold", price: 2872.50, change: 24.30, changePercent: 0.85, unit: "USD" },
   { symbol: "BTC", name: "Bitcoin", price: 97245.50, change: 1523.40, changePercent: 1.59, unit: "USD" },
   { symbol: "ETH", name: "Ethereum", price: 3412.75, change: -45.20, changePercent: -1.31, unit: "USD" },
 ];
