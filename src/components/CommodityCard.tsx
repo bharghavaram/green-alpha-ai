@@ -74,15 +74,15 @@ const CommodityCard = ({ commodity, delay = 0 }: CommodityCardProps) => {
 
       <div className="flex items-start justify-between">
         <div className="space-y-3">
-          {/* USD Price */}
+          {/* USD Price per kg */}
           <div>
             <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{commodity.unit}</div>
             <div className="text-2xl font-display font-bold text-foreground">
-              ${commodity.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              ${(commodity.price * 32.1507).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
           </div>
           
-          {/* INR Price - Same prominence as USD */}
+          {/* INR Price per kg - Same prominence as USD */}
           {commodity.priceINR && (
             <div>
               <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{commodity.unitINR}</div>
