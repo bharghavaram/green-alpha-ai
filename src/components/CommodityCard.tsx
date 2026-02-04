@@ -15,6 +15,8 @@ const getAssetStyle = (symbol: string) => {
       return { gradient: "from-slate-300 via-slate-100 to-slate-400", bg: "bg-slate-400/20", border: "border-slate-400/50", icon: "text-slate-300" };
     case "PAXG":
       return { gradient: "from-amber-400 via-yellow-300 to-amber-500", bg: "bg-amber-500/20", border: "border-amber-500/50", icon: "text-amber-400" };
+    case "PAXS":
+      return { gradient: "from-zinc-300 via-gray-200 to-zinc-400", bg: "bg-zinc-400/20", border: "border-zinc-400/50", icon: "text-zinc-300" };
     case "BTC":
       return { gradient: "from-orange-500 via-amber-500 to-orange-600", bg: "bg-orange-500/20", border: "border-orange-500/50", icon: "text-orange-400" };
     case "ETH":
@@ -78,15 +80,19 @@ const CommodityCard = ({ commodity, delay = 0 }: CommodityCardProps) => {
 
       <div className="flex items-start justify-between">
         <div className="space-y-3">
-          {/* USD Price per kg */}
+          {/* USD Price */}
           <div>
             <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{commodity.unit}</div>
             <div className="text-2xl font-display font-bold text-foreground">
-              ${(commodity.price * 32.1507).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+              {/* Physical gold/silver show per kg, tokenized show per token */}
+              ${(commodity.symbol === "XAU" || commodity.symbol === "XAG" 
+                ? (commodity.price * 32.1507) 
+                : commodity.price
+              ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
           </div>
           
-          {/* INR Price per kg - Same prominence as USD */}
+          {/* INR Price - Same prominence as USD */}
           {commodity.priceINR && (
             <div>
               <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{commodity.unitINR}</div>
