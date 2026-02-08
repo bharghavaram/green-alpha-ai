@@ -71,11 +71,25 @@ const HeroSection = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3 }}
-            className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-12 font-light"
+            className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto mb-8 font-light"
           >
             Multi-modal neural system fusing <span className="text-primary">stock predictions</span>, 
             <span className="text-accent"> ESG sustainability</span>, and <span className="text-foreground">LLM agents</span> for the future of investing.
           </motion.p>
+
+          {/* What's New Banner */}
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.35 }}
+            className="inline-flex flex-wrap items-center justify-center gap-3 px-6 py-3 mb-12 border border-accent/30 bg-accent/5 backdrop-blur-sm rounded-sm"
+            style={{ clipPath: 'polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)' }}
+          >
+            <span className="text-xs font-bold uppercase tracking-widest text-accent border border-accent/50 px-2 py-0.5 bg-accent/10">New</span>
+            <span className="text-sm text-muted-foreground">
+              <span className="text-foreground font-semibold">PAX Gold</span> & <span className="text-foreground font-semibold">PAX Silver</span> tokenized assets now live with <span className="text-primary font-semibold">USD ↔ INR</span> conversion
+            </span>
+          </motion.div>
 
           {/* CTA Buttons */}
           <motion.div
