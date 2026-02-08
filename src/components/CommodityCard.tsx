@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
 import { TrendingUp, TrendingDown, Gem, Bitcoin, CircleDollarSign, Coins } from "lucide-react";
 import { Commodity } from "@/data/marketData";
+import MiniSparkline from "./MiniSparkline";
+import { PricePoint } from "@/hooks/useLivePrices";
 
 interface CommodityCardProps {
   commodity: Commodity;
   delay?: number;
+  sparklineData?: PricePoint[];
 }
 
 const getAssetStyle = (symbol: string) => {
@@ -33,16 +36,18 @@ const getIcon = (symbol: string) => {
     case "ETH":
       return CircleDollarSign;
     case "PAXG":
+    case "PAXS":
       return Coins;
     default:
       return Gem;
   }
 };
 
-const CommodityCard = ({ commodity, delay = 0 }: CommodityCardProps) => {
+const CommodityCard = ({ commodity, delay = 0, sparklineData }: CommodityCardProps) => {
   const isPositive = commodity.change >= 0;
   const style = getAssetStyle(commodity.symbol);
   const Icon = getIcon(commodity.symbol);
+  const isTokenized = commodity.symbol === "PAXG" || commodity.symbol === "PAXS";
 
   return (
     <motion.div
@@ -57,7 +62,10 @@ const CommodityCard = ({ commodity, delay = 0 }: CommodityCardProps) => {
       
       {/* Live pulse indicator */}
       <div className="absolute top-3 right-3 flex items-center gap-1.5">
-        <div className="w-2 h-2 rounded-full bg-success animate-pulse shadow-[0_0_8px_hsl(150_100%_45%)]" />
+        <span className="relative flex h-2 w-2">
+          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-success opacity-75" />
+          <span className="relative inline-flex rounded-full h-2 w-2 bg-success shadow-[0_0_8px_hsl(150_100%_45%)]" />
+        </span>
         <span className="text-[10px] text-muted-foreground uppercase tracking-wider font-medium">Live</span>
       </div>
 
@@ -78,21 +86,25 @@ const CommodityCard = ({ commodity, delay = 0 }: CommodityCardProps) => {
         </div>
       </div>
 
+      {/* Live Sparkline Chart */}
+      {sparklineData && sparklineData.length > 2 && (
+        <div className="mb-4 -mx-1">
+          <MiniSparkline data={sparklineData} color="auto" height={50} />
+        </div>
+      )}
+
       <div className="flex items-start justify-between">
         <div className="space-y-3">
           {/* USD Price */}
           <div>
             <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{commodity.unit}</div>
             <div className="text-2xl font-display font-bold text-foreground">
-              {/* Physical gold/silver show per kg, tokenized show per token */}
-              ${(commodity.symbol === "XAU" || commodity.symbol === "XAG" 
-                ? (commodity.price * 32.1507) 
-                : commodity.price
+              ${(isTokenized ? commodity.price : commodity.price * 32.1507
               ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
             </div>
           </div>
           
-          {/* INR Price - Same prominence as USD */}
+          {/* INR Price */}
           {commodity.priceINR && (
             <div>
               <div className="text-xs text-muted-foreground uppercase tracking-wider mb-1">{commodity.unitINR}</div>
@@ -101,32 +113,20 @@ const CommodityCard = ({ commodity, delay = 0 }: CommodityCardProps) => {
               </div>
             </div>
           )}
-          
-          {/* Change indicator */}
-          <div className={`flex items-center gap-1.5 ${isPositive ? 'text-success' : 'text-destructive'}`}>
-            {isPositive ? (
-              <TrendingUp className="w-4 h-4" />
-            ) : (
-              <TrendingDown className="w-4 h-4" />
-            )}
+        </div>
+        
+        {/* Change */}
+        <div className="text-right space-y-1">
+          <div className={`flex items-center gap-1 justify-end ${isPositive ? 'text-success' : 'text-destructive'}`}>
+            {isPositive ? <TrendingUp className="w-4 h-4" /> : <TrendingDown className="w-4 h-4" />}
             <span className="text-sm font-bold">
               {isPositive ? '+' : ''}{commodity.change.toFixed(2)}
             </span>
-            <span className="text-sm font-medium">
-              ({isPositive ? '+' : ''}{commodity.changePercent.toFixed(2)}%)
-            </span>
           </div>
-        </div>
-          
-        {/* Mini sparkline */}
-        <div className="flex items-end gap-0.5 h-8">
-          {[40, 55, 45, 60, 52, 70, 65, 75].map((height, i) => (
-            <div 
-              key={i}
-              className={`w-1 rounded-t ${isPositive ? 'bg-success/60' : 'bg-destructive/60'}`}
-              style={{ height: `${height}%` }}
-            />
-          ))}
+          <div className={`text-sm font-medium ${isPositive ? 'text-success' : 'text-destructive'}`}>
+            ({isPositive ? '+' : ''}{commodity.changePercent.toFixed(2)}%)
+          </div>
+          <div className="text-xs text-muted-foreground uppercase tracking-wider">24h</div>
         </div>
       </div>
     </motion.div>

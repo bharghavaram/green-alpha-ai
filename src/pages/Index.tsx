@@ -11,11 +11,35 @@ import PriceChart from "@/components/PriceChart";
 import PortfolioChart from "@/components/PortfolioChart";
 import ChatSection from "@/components/ChatSection";
 import { stocksData, esgMetrics, agentInsights } from "@/data/stockData";
+import { useLivePrices } from "@/hooks/useLivePrices";
 import { Zap, TrendingUp, Brain, Target, ChevronRight, Github, Terminal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+// Configure live streaming for Indian stocks
+const stockAssetConfigs = stocksData.map(s => ({
+  symbol: s.symbol,
+  basePrice: s.price,
+  volatility: 0.002,
+}));
+
 const Index = () => {
   const [selectedStock, setSelectedStock] = useState("TCS.NS");
+  const { liveAssets, getAsset } = useLivePrices(stockAssetConfigs, 2000);
+
+  // Get live stock data merged with static data
+  const liveStocksData = stocksData.map(stock => {
+    const live = liveAssets.get(stock.symbol);
+    if (!live) return stock;
+    return {
+      ...stock,
+      price: live.price,
+      change: live.change,
+      changePercent: live.changePercent,
+    };
+  });
+
+  // Get selected stock's live chart data
+  const selectedLiveData = getAsset(selectedStock)?.history;
 
   return (
     <div className="min-h-screen bg-background scanlines">
@@ -65,20 +89,21 @@ const Index = () => {
                 <Target className="w-5 h-5 text-primary" />
                 Stock Predictions
               </h3>
-              {stocksData.map((stock, index) => (
+              {liveStocksData.map((stock, index) => (
                 <StockCard
                   key={stock.symbol}
                   stock={stock}
                   index={index}
                   isSelected={selectedStock === stock.symbol}
                   onSelect={setSelectedStock}
+                  sparklineData={liveAssets.get(stock.symbol)?.history}
                 />
               ))}
             </div>
 
             {/* Middle Column - Charts */}
             <div className="lg:col-span-1 space-y-6">
-              <PriceChart selectedStock={selectedStock} />
+              <PriceChart selectedStock={selectedStock} liveData={selectedLiveData} />
               <PortfolioChart />
             </div>
 

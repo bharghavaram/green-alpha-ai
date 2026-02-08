@@ -12,16 +12,50 @@ import {
   Commodity,
   USD_TO_INR
 } from "@/data/marketData";
+import { useLivePrices } from "@/hooks/useLivePrices";
+
+// Configure all commodities for live streaming
+const commodityAssetConfigs = initialCommodities.map(c => ({
+  symbol: c.symbol,
+  basePrice: c.price,
+  volatility: c.symbol === "BTC" ? 0.003 : c.symbol === "ETH" ? 0.004 : 0.001,
+}));
 
 const GlobalMarketsSection = () => {
   const [indices, setIndices] = useState<MarketIndex[]>(initialIndices);
   const [commodities, setCommodities] = useState<Commodity[]>(initialCommodities);
   const [lastUpdate, setLastUpdate] = useState(new Date());
 
-  // Simulate live price updates
+  // Live streaming prices for sparkline data
+  const { liveAssets } = useLivePrices(commodityAssetConfigs, 2000);
+
+  // Sync commodity prices from live hook
+  useEffect(() => {
+    setCommodities(prev => prev.map(commodity => {
+      const live = liveAssets.get(commodity.symbol);
+      if (!live) return commodity;
+
+      let priceINR: number | undefined;
+      if (commodity.symbol === "XAU" || commodity.symbol === "XAG") {
+        priceINR = Math.round((live.price * 32.1507 * USD_TO_INR) * 100) / 100;
+      } else if (commodity.symbol === "PAXG" || commodity.symbol === "PAXS") {
+        priceINR = Math.round((live.price * USD_TO_INR) * 100) / 100;
+      }
+
+      return {
+        ...commodity,
+        price: live.price,
+        change: live.change,
+        changePercent: live.changePercent,
+        priceINR,
+      };
+    }));
+    setLastUpdate(new Date());
+  }, [liveAssets]);
+
+  // Simulate live index updates
   useEffect(() => {
     const interval = setInterval(() => {
-      // Update indices
       setIndices(prev => prev.map(index => {
         if (index.status === 'closed') return index;
         const basePrice = initialIndices.find(i => i.symbol === index.symbol)?.price || index.price;
@@ -29,26 +63,6 @@ const GlobalMarketsSection = () => {
         const { change, changePercent } = calculateChange(newPrice, basePrice);
         return { ...index, price: newPrice, change, changePercent };
       }));
-
-      // Update commodities
-      setCommodities(prev => prev.map(commodity => {
-        const basePrice = initialCommodities.find(c => c.symbol === commodity.symbol)?.price || commodity.price;
-        const newPrice = generatePriceUpdate(commodity.price, 0.001);
-        const { change, changePercent } = calculateChange(newPrice, basePrice);
-        
-        let priceINR: number | undefined;
-        if (commodity.symbol === "XAU" || commodity.symbol === "XAG") {
-          // Physical gold/silver: convert oz to kg (1 kg = 32.1507 oz)
-          priceINR = Math.round((newPrice * 32.1507 * USD_TO_INR) * 100) / 100;
-        } else if (commodity.symbol === "PAXG" || commodity.symbol === "PAXS") {
-          // Tokenized assets: direct USD to INR conversion (per token)
-          priceINR = Math.round((newPrice * USD_TO_INR) * 100) / 100;
-        }
-        
-        return { ...commodity, price: newPrice, priceINR, change, changePercent };
-      }));
-
-      setLastUpdate(new Date());
     }, 3000);
 
     return () => clearInterval(interval);
@@ -104,6 +118,7 @@ const GlobalMarketsSection = () => {
                 key={commodity.symbol} 
                 commodity={commodity} 
                 delay={index}
+                sparklineData={liveAssets.get(commodity.symbol)?.history}
               />
             ))}
           </div>
@@ -127,6 +142,7 @@ const GlobalMarketsSection = () => {
                 key={commodity.symbol} 
                 commodity={commodity} 
                 delay={index}
+                sparklineData={liveAssets.get(commodity.symbol)?.history}
               />
             ))}
           </div>
@@ -150,6 +166,7 @@ const GlobalMarketsSection = () => {
                 key={commodity.symbol} 
                 commodity={commodity} 
                 delay={index}
+                sparklineData={liveAssets.get(commodity.symbol)?.history}
               />
             ))}
           </div>

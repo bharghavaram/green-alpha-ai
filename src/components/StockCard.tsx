@@ -2,15 +2,18 @@ import { motion } from "framer-motion";
 import { TrendingUp, TrendingDown, Activity, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { StockData } from "@/data/stockData";
+import MiniSparkline from "./MiniSparkline";
+import { PricePoint } from "@/hooks/useLivePrices";
 
 interface StockCardProps {
   stock: StockData;
   index: number;
   isSelected?: boolean;
   onSelect?: (symbol: string) => void;
+  sparklineData?: PricePoint[];
 }
 
-const StockCard = ({ stock, index, isSelected, onSelect }: StockCardProps) => {
+const StockCard = ({ stock, index, isSelected, onSelect, sparklineData }: StockCardProps) => {
   const isPositive = stock.change >= 0;
 
   return (
@@ -50,9 +53,9 @@ const StockCard = ({ stock, index, isSelected, onSelect }: StockCardProps) => {
         </div>
 
         {/* Price */}
-        <div className="mb-3">
+        <div className="mb-2">
           <span className="text-2xl font-display font-black text-foreground">
-            ₹{stock.price.toLocaleString()}
+            ₹{stock.price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </span>
           <div className={cn(
             "flex items-center gap-1 text-sm mt-1 font-semibold",
@@ -63,6 +66,13 @@ const StockCard = ({ stock, index, isSelected, onSelect }: StockCardProps) => {
             <span>({isPositive ? "+" : ""}{stock.changePercent.toFixed(2)}%)</span>
           </div>
         </div>
+
+        {/* Live Sparkline */}
+        {sparklineData && sparklineData.length > 2 && (
+          <div className="mb-3 -mx-1">
+            <MiniSparkline data={sparklineData} color="auto" height={35} />
+          </div>
+        )}
 
         {/* Metrics */}
         <div className="flex items-center justify-between text-xs uppercase tracking-wider">
